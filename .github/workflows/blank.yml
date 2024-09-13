@@ -10,6 +10,13 @@ on:
     paths:
       - 'version'
   workflow_dispatch:
+    inputs:
+      dockerhub_image:
+        description: 'Docker Hub 镜像名称 (全名，包括用户名/组织名和镜像名)'
+        required: true
+        type: string
+        default: 'hello-world'
+
 
 jobs:
   build:
@@ -27,4 +34,9 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Add other actions to build,
+          echo before pull
+          docker ps -a
+          docker pull  ${{ github.event.inputs.dockerhub_image }}
+          echo after pull
+          docker ps -a
           echo test, and deploy your project.
