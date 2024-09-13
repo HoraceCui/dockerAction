@@ -15,7 +15,13 @@ on:
         description: 'Docker Hub 镜像名称 (全名，包括用户名/组织名和镜像名)'
         required: true
         type: string
-        default: 'hello-world'
+        default: 'hello-world:latest'
+      new_tag:
+        description: '需要修改的镜像 tag 名'
+        required: true
+        type: string
+        default: 'hello-world_latest'
+
 
 
 jobs:
@@ -26,17 +32,21 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      # 拉取 Docker Hub 上的镜像
+      - name: Pull image from Docker Hub
         run: |
-          echo Add other actions to build,
-          echo before pull
+          echo start pull
+          docker pull ${{ github.event.inputs.dockerhub_image }}
+          
+
+      # 给镜像打上新标签
+      - name: Retag Docker image
+        run: |
           docker images
-          docker pull  ${{ github.event.inputs.dockerhub_image }}
-          echo after pull
+          OLD_IMAGE=${{ github.event.inputs.dockerhub_image }}
+          NEW_TAG=${{ github.event.inputs.new_tag }}
+          NEW_IMAGE="registry.cn-shanghai.aliyuncs.com/alcui/hub:${NEW_TAG}"
+          docker tag ${OLD_IMAGE} ${NEW_IMAGE}
+          echo "New image: ${NEW_IMAGE}"
           docker images
           echo test, and deploy your project.
