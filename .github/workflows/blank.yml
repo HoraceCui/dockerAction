@@ -36,7 +36,8 @@ jobs:
       - name: Pull image from Docker Hub
         run: |
           echo start pull
-          docker pull ${{ github.event.inputs.dockerhub_image }} || {echo "没有指定的镜像" && exit 0}
+          docker pull ${{ github.event.inputs.dockerhub_image }}
+          continue-on-error: true
           
 
       # 给镜像打上新标签
@@ -47,6 +48,7 @@ jobs:
           NEW_TAG=${{ github.event.inputs.new_tag }}
           NEW_IMAGE="registry.cn-shanghai.aliyuncs.com/alcui/hub:${NEW_TAG}"
           docker tag ${OLD_IMAGE} ${NEW_IMAGE}
+          continue-on-error: true
           echo "Old image: ${OLD_IMAGE}"
           echo "New image: ${NEW_IMAGE}"
           docker images
@@ -56,8 +58,10 @@ jobs:
         run: |
           #if: success()  # 仅当上一步骤成功时执行 
           echo "${{ secrets.ALIYUN_PASSWORD }}" | docker login -u "${{ secrets.ALIYUN_USERNAME }}" registry.cn-shanghai.aliyuncs.com --password-stdin
+          continue-on-error: true
           OLD_IMAGE=${{ github.event.inputs.dockerhub_image }}
           NEW_TAG=${{ github.event.inputs.new_tag }}
           NEW_IMAGE="registry.cn-shanghai.aliyuncs.com/alcui/hub:${NEW_TAG}"
           docker push ${NEW_IMAGE}
+          continue-on-error: true
           
