@@ -35,8 +35,8 @@ jobs:
         run: |
           echo Add other actions to build,
           echo before pull
-          docker ps -a
+          docker images
           docker pull  ${{ github.event.inputs.dockerhub_image }}
           echo after pull
-          docker ps -a
+          docker images
           echo test, and deploy your project.
