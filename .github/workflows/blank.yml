@@ -54,7 +54,7 @@ jobs:
     # 推送
       - name: Login to Aliyun Docker Registry
         run: |
-          if: success()  # 仅当上一步骤成功时执行 
+          #if: success()  # 仅当上一步骤成功时执行 
           echo "${{ secrets.ALIYUN_PASSWORD }}" | docker login -u "${{ secrets.ALIYUN_USERNAME }}" registry.cn-shanghai.aliyuncs.com --password-stdin
           OLD_IMAGE=${{ github.event.inputs.dockerhub_image }}
           NEW_TAG=${{ github.event.inputs.new_tag }}
