@@ -58,5 +58,6 @@ jobs:
           OLD_IMAGE=${{ github.event.inputs.dockerhub_image }}
           NEW_TAG=${{ github.event.inputs.new_tag }}
           NEW_IMAGE="registry.cn-shanghai.aliyuncs.com/alcui/hub:${NEW_TAG}"
+          echo "New image: ${NEW_IMAGE}"
           docker push ${NEW_IMAGE}
           
