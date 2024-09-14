@@ -21,7 +21,7 @@ jobs:
       # 拉取 Docker Hub 上的镜像
       - name: Pull image from Docker Hub
         run: |
-          echo start pull
+          echo start pull ${{ github.event.inputs.dockerhub_image }}
           docker pull ${{ github.event.inputs.dockerhub_image }}          
 
       # 给镜像打上新标签
