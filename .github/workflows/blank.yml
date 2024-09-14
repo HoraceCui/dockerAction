@@ -36,7 +36,7 @@ jobs:
           NEW_TAG=$(echo "${NEW_TAG}" | sed 's/\//_/g; s/\:/_/g')
           NEW_IMAGE="registry.cn-shanghai.aliyuncs.com/alcui/hub:${NEW_TAG}"
           docker tag ${OLD_IMAGE} ${NEW_IMAGE}
-          echo "Old image: ${OLD_IMAGE}"
+          # echo "Old image: ${OLD_IMAGE}"
           echo "New image: ${NEW_IMAGE}"
           docker images
 
