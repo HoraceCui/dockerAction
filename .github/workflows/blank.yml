@@ -44,7 +44,7 @@ jobs:
           echo "${{ secrets.ALIYUN_PASSWORD }}" | docker login -u "${{ secrets.ALIYUN_USERNAME }}" registry.cn-shanghai.aliyuncs.com --password-stdin
           OLD_IMAGE=${{ github.event.inputs.dockerhub_image }}
           #NEW_TAG=${{ github.event.inputs.new_tag }}
-          NEW_TAG=$(echo "${NEW_TAG}" | sed 's/\//_/g; s/\:/_/g')
+          NEW_TAG=$(echo "${OLD_IMAGE}" | sed 's/\//_/g; s/\:/_/g')
           NEW_IMAGE="registry.cn-shanghai.aliyuncs.com/alcui/hub:${NEW_TAG}"
           echo "Old image: ${OLD_IMAGE}"
           echo "New image: ${NEW_IMAGE}"
