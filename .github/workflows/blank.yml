@@ -15,12 +15,7 @@ on:
         description: 'Docker Hub 镜像名称 (全名，包括用户名/组织名和镜像名)'
         required: true
         type: string
-        default: 'hello-world:latest'
-      new_tag:
-        description: '需要修改的镜像 tag 名'
-        required: true
-        type: string
-        default: 'hello-world_latest'
+        default: 'hello-world:latest
 
 
 
@@ -43,7 +38,8 @@ jobs:
         run: |
           docker images
           OLD_IMAGE=${{ github.event.inputs.dockerhub_image }}
-          NEW_TAG=${{ github.event.inputs.new_tag }}
+          #NEW_TAG=${{ github.event.inputs.new_tag }}
+          NEW_TAG=$(echo "${NEW_TAG}" | sed 's/\//_/g; s/\:/_/g')
           NEW_IMAGE="registry.cn-shanghai.aliyuncs.com/alcui/hub:${NEW_TAG}"
           docker tag ${OLD_IMAGE} ${NEW_IMAGE}
           echo "Old image: ${OLD_IMAGE}"
@@ -56,7 +52,10 @@ jobs:
           #if: success()  # 仅当上一步骤成功时执行 
           echo "${{ secrets.ALIYUN_PASSWORD }}" | docker login -u "${{ secrets.ALIYUN_USERNAME }}" registry.cn-shanghai.aliyuncs.com --password-stdin
           OLD_IMAGE=${{ github.event.inputs.dockerhub_image }}
-          NEW_TAG=${{ github.event.inputs.new_tag }}
+          #NEW_TAG=${{ github.event.inputs.new_tag }}
+          NEW_TAG=$(echo "${NEW_TAG}" | sed 's/\//_/g; s/\:/_/g')
           NEW_IMAGE="registry.cn-shanghai.aliyuncs.com/alcui/hub:${NEW_TAG}"
+          echo "Old image: ${OLD_IMAGE}"
+          echo "New image: ${NEW_IMAGE}"
           docker push ${NEW_IMAGE}
           
