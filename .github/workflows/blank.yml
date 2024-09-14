@@ -7,7 +7,6 @@ on:
   workflow_dispatch:
     inputs:
       dockerhub_image:
-        description: 'Docker Hub 镜像名称 (全名，包括用户名/组织名和镜像名)'
         required: true
         type: string
         default: 'hello-world:latest
